@@ -55,6 +55,32 @@ const UserController = {
         });
       });
   },
+  // ver todos Users conectados
+  async getConected(req, res) {
+    try {
+      User.find({}).then((users) => {
+        const conectedUsers = [];
+        const i = 0;
+        users.forEach((user) => {
+          if (user.tokens != 0) {
+            conectedUsers.push(user.email);
+          }
+        });
+        res.send({
+          message:
+            "Los siguientes usuarios se encuentran conectados actualmente: ",
+          conectedUsers,
+        });
+      });
+    } catch {
+      (err) => {
+        console.log(err);
+        res.status(500).send({
+          message: "Ha habido un problema al cargar los Usuarios",
+        });
+      };
+    }
+  },
 
   //get by id
   async getById(req, res) {
