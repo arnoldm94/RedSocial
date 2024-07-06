@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 
 const UserController = {
   //crear User
-  // HECHO
   create(req, res) {
     req.body.role = "user";
     const password = bcrypt.hashSync(req.body.password, 10);
@@ -17,7 +16,6 @@ const UserController = {
   },
 
   //actualizar user
-  //HECHO
   async update(req, res) {
     try {
       const user = {
@@ -35,7 +33,6 @@ const UserController = {
     }
   },
   //borrar User
-  // HECHO
   async delete(req, res) {
     try {
       await User.findByIdAndDelete({
@@ -49,41 +46,51 @@ const UserController = {
 
   // ver todos Users
   getAll(req, res) {
-    User.findAll({ include: [Pedido] }, { include: [Review] })
-      .then((user) => res.send(user))
+    User.find({})
+      .then((users) => res.send(users))
       .catch((err) => {
         console.log(err);
         res.status(500).send({
-          message: "Ha habido un problema al cargar los Users",
+          message: "Ha habido un problema al cargar los Usuarios",
         });
       });
   },
 
   //get by id
-  getById(req, res) {
-    User.findByPk(req.params.id, {
-      include: [
-        { model: Review, attributes: ["comment"] },
-        { model: Productos, attributes: ["name"] },
-        { model: Pedido, attributes: [] },
-      ],
-    }).then((producto) => res.send(producto));
+  async getById(req, res) {
+    try {
+      const user = await User.findById(req.params._id);
+      res.send(user);
+    } catch {
+      (err) => {
+        console.log(err);
+        res.status(500).send({
+          message: "Usuario no encontrado",
+        });
+      };
+    }
   },
 
   // buscar User por nombre
-  getOneByName(req, res) {
-    User.findOne({
-      where: {
-        name: {
-          [Op.like]: `%${req.params.name}%`,
-        },
-      },
-      include: [Pedido],
-    }).then((user) => res.send(user));
+  //HECHO PERO FALTA MENSAJE CUANDO NO CONSIGUE USUARIO
+  async getOneByName(req, res, next) {
+    try {
+      const user = await User.findOne(
+        { name: req.params.name },
+        "name age"
+      ).exec();
+      res.send(user);
+    } catch {
+      (err) => {
+        console.log(err);
+        res.status(500).send({
+          message: "Usuario no encontrado",
+        });
+      };
+    }
   },
 
   //login de usuario
-  //HECHO
   async login(req, res, next) {
     try {
       const user = await User.findOne({
@@ -115,15 +122,13 @@ const UserController = {
   //logout de usuario
   async logout(req, res) {
     try {
-      await Token.destroy({
-        where: {
-          [Op.and]: [
-            { UserId: req.user.id },
-            { token: req.headers.authorization },
-          ],
-        },
+      const user = await User.findOne({
+        email: req.body.email,
+      }).then((user) => {
+        user.tokens = [];
+        user.save();
+        res.send({ message: "Desconectado con éxito" });
       });
-      res.send({ message: "Desconectado con éxito" });
     } catch (error) {
       console.log(error);
       res
