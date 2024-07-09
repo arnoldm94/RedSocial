@@ -8,6 +8,7 @@ router.put("/id/:_id", authentication, UserController.update);
 router.delete("/id/:_id", authentication, UserController.delete);
 router.get("/", authentication, isAdmin, UserController.getAll);
 router.get("/conected", UserController.getConected);
+router.get("/myinfo", authentication, UserController.getinfo);
 router.get("/id/:_id", UserController.getById);
 router.get("/name/:name", UserController.getOneByName);
 router.post("/login", UserController.login);

@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - ./:/api-root/src
+      - ./:/root/src
     healthcheck:
       disable: true
     restart: unless-stopped
@@ -18,6 +18,6 @@ services:
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: nombreusuario
-      MONGO_INITDB_ROOT_PASSWORD: contraseñaDB
-      MONGO_INITDB_DATABASE: nombreDB
+      MONGO_INITDB_ROOT_USERNAME: arnoldmelet18
+      MONGO_INITDB_ROOT_PASSWORD: ajmp1994
+      MONGO_INITDB_DATABASE: DBRedSocial

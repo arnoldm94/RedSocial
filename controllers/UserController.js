@@ -81,11 +81,32 @@ const UserController = {
       };
     }
   },
+  // ver info User conectado
+  async getinfo(req, res) {
+    try {
+      User.findById({ _id: req.user._id })
+        .populate("commentId")
+        .then((user) => {
+          res.send({
+            message:
+              "el siguiente usuario se encuentran conectado actualmente: ",
+            user,
+          });
+        });
+    } catch {
+      (err) => {
+        console.log(err);
+        res.status(500).send({
+          message: "Ha habido un problema al cargar los Usuarios",
+        });
+      };
+    }
+  },
 
   //get by id
   async getById(req, res) {
     try {
-      const user = await User.findById(req.params._id);
+      const user = await User.findById(req.params._id).populate("commentId");
       res.send(user);
     } catch {
       (err) => {
