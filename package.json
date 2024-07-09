@@ -16,7 +16,8 @@
     "jsonwebtoken": "^9.0.2",
     "latest-version": "^9.0.0",
     "mongoose": "^8.4.5",
-    "mysql2": "^3.10.2"
+    "mysql2": "^3.10.2",
+    "nodemailer": "^6.9.14"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
