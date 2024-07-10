@@ -90,7 +90,8 @@ const UserController = {
       User.findById({ _id: req.user._id })
         .populate("commentId")
         .populate("postId")
-        .populate("mylikes")
+        .populate("mycommentlikes")
+        .populate("mypostlikes")
         .then((user) => {
           res.send({
             message:

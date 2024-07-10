@@ -77,5 +77,25 @@ const CommentController = {
       };
     }
   },
+
+  //dar likes
+  async like(req, res) {
+    try {
+      const comment = await Comment.findByIdAndUpdate(
+        req.params._id,
+        { $push: { likes: req.user._id } },
+        { new: true }
+      );
+      await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { mycommentlikes: req.params._id } },
+        { new: true }
+      );
+      res.send(comment);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Hay un problema con tu solicitud..." });
+    }
+  },
 };
 module.exports = CommentController;

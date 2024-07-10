@@ -49,7 +49,7 @@ const PostController = {
   getAll(req, res) {
     Post.find({})
       .populate("userId")
-      .populate("comments")
+      .populate("commentId")
       .then((post) => res.send(post))
       .catch((err) => {
         console.log(err);
@@ -73,6 +73,8 @@ const PostController = {
       };
     }
   },
+
+  //dar likes
   async like(req, res) {
     try {
       const post = await Post.findByIdAndUpdate(
@@ -82,10 +84,10 @@ const PostController = {
       );
       await User.findByIdAndUpdate(
         req.user._id,
-        { $push: { mylikes: req.params._id } },
+        { $push: { mypostlikes: req.params._id } },
         { new: true }
-      );
-      res.send(post);
+      ),
+        res.send(post);
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: "Hay un problema con tu solicitud..." });

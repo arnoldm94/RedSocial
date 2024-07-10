@@ -20,7 +20,8 @@ const UserSchema = new mongoose.Schema(
     },
 
     role: String,
-    mylikes: [{ type: ObjectId, ref: "Post" }],
+    mypostlikes: [{ type: ObjectId, ref: "Post" }],
+    mycommentlikes: [{ type: ObjectId, ref: "Comment" }],
     commentId: [
       {
         type: ObjectId,
