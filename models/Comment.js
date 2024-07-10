@@ -3,10 +3,18 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const CommentSchema = new mongoose.Schema(
   {
-    body: String,
+    body: {
+      type: String,
+      required: [true, "Por favor rellena el cuerpo de tu comentario"],
+    },
+
     userId: {
       type: ObjectId,
       ref: "User",
+    },
+    postId: {
+      type: ObjectId,
+      ref: "Post",
     },
   },
   { timestamps: true }

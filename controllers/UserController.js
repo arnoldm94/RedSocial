@@ -5,14 +5,17 @@ const bcrypt = require("bcryptjs");
 
 const UserController = {
   //crear User
-  create(req, res) {
+  create(req, res, next) {
     req.body.role = "user";
     const password = bcrypt.hashSync(req.body.password, 10);
     User.create({ ...req.body, password: password })
       .then((user) =>
         res.status(201).send({ message: "Usuario creado con éxito", user })
       )
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        err.origin = "usuario";
+        next(err);
+      });
   },
 
   //actualizar user
@@ -86,6 +89,8 @@ const UserController = {
     try {
       User.findById({ _id: req.user._id })
         .populate("commentId")
+        .populate("postId")
+        .populate("mylikes")
         .then((user) => {
           res.send({
             message:
@@ -106,7 +111,9 @@ const UserController = {
   //get by id
   async getById(req, res) {
     try {
-      const user = await User.findById(req.params._id).populate("commentId");
+      const user = await User.findById(req.params._id)
+        .populate("commentId")
+        .populate("mylikes");
       res.send(user);
     } catch {
       (err) => {

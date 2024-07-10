@@ -3,15 +3,36 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 const UserSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: String,
-    age: Number,
-    role: String,
-    commentId: {
-      type: ObjectId,
-      ref: "Comment",
+    name: { type: String, required: [true, "Por favor rellena tu nombre"] },
+    email: {
+      type: String,
+      match: [/.+\@.+\..+/, "Este correo no es válido"],
+      unique: true,
+      required: [true, "Por favor rellena tu correo"],
     },
+    password: {
+      type: String,
+      required: [true, "Por favor rellena tu contraseña"],
+    },
+    age: {
+      type: Number,
+      required: [true, "Por favor rellena tu edad"],
+    },
+
+    role: String,
+    mylikes: [{ type: ObjectId, ref: "Post" }],
+    commentId: [
+      {
+        type: ObjectId,
+        ref: "Comment",
+      },
+    ],
+    postId: [
+      {
+        type: ObjectId,
+        ref: "Post",
+      },
+    ],
     tokens: [],
   },
   { timestamps: true }

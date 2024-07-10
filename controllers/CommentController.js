@@ -1,20 +1,23 @@
 const Comment = require("../models/Comment.js");
 const User = require("../models/Comment.js");
-const jwt = require("jsonwebtoken");
-const { jwt_secret } = require("../config/keys.js");
-const bcrypt = require("bcryptjs");
+const Post = require("../models/Post.js");
 
 const CommentController = {
   //crear Comment
   async create(req, res) {
     try {
-      const comment = Comment.create({
+      const comment = await Comment.create({
         body: req.body.body,
         userId: req.user.id,
+        postId: req.params._id,
       });
       await User.findByIdAndUpdate(req.user._id, {
         $push: { commentId: comment._id },
-      }).res.send(comment);
+      }),
+        await Post.findByIdAndUpdate(req.params._id, {
+          $push: { commentId: comment._id },
+        }),
+        res.send(comment);
     } catch (err) {
       console.error({ message: "algo ha ido mal", err });
     }
