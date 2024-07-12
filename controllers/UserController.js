@@ -87,11 +87,11 @@ const UserController = {
   // ver info User conectado
   async getinfo(req, res) {
     try {
-      User.findById({ _id: req.user._id })
-        .populate("commentId")
-        .populate("postId")
-        .populate("mycommentlikes")
-        .populate("mypostlikes")
+      await User.findById({ _id: req.user._id })
+        .populate("commentId", "body")
+        .populate("postId", "body")
+        .populate("mycommentlikes", "body")
+        .populate("mypostlikes", "body")
         .then((user) => {
           res.send({
             message:
@@ -113,8 +113,8 @@ const UserController = {
   async getById(req, res) {
     try {
       const user = await User.findById(req.params._id)
-        .populate("commentId")
-        .populate("mylikes");
+        .populate("commentId", "body")
+        .populate("mylikes", "body");
       res.send(user);
     } catch {
       (err) => {

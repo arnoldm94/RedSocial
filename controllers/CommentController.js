@@ -1,5 +1,5 @@
 const Comment = require("../models/Comment.js");
-const User = require("../models/Comment.js");
+const User = require("../models/User.js");
 const Post = require("../models/Post.js");
 
 const CommentController = {
@@ -53,7 +53,7 @@ const CommentController = {
   // ver todos los comentarios
   getAll(req, res) {
     Comment.find({})
-      .populate("userId")
+      .populate("userId", "name email")
       .then((comment) => res.send(comment))
       .catch((err) => {
         console.log(err);
@@ -66,7 +66,10 @@ const CommentController = {
   //get by id
   async getById(req, res) {
     try {
-      const comment = await Comment.findById(req.params._id).populate("userId");
+      const comment = await Comment.findById(req.params._id).populate(
+        "userId",
+        "name email"
+      );
       res.send(comment);
     } catch {
       (err) => {
@@ -83,7 +86,25 @@ const CommentController = {
     try {
       const comment = await Comment.findByIdAndUpdate(
         req.params._id,
-        { $push: { likes: req.user._id } },
+        { $addToSet: { likes: req.user._id } },
+        { new: true }
+      );
+      await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { mycommentlikes: req.params._id } },
+        { new: true }
+      );
+      res.send(comment);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Hay un problema con tu solicitud..." });
+    }
+  },
+  async unlike(req, res) {
+    try {
+      const comment = await Comment.findByIdAndUpdate(
+        req.params._id,
+        { $pull: { likes: req.user._id } },
         { new: true }
       );
       await User.findByIdAndUpdate(

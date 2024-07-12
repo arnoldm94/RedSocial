@@ -48,8 +48,8 @@ const PostController = {
   // ver todos los posts
   getAll(req, res) {
     Post.find({})
-      .populate("userId")
-      .populate("commentId")
+      .populate("userId", "name email")
+      .populate("commentId", "body")
       .then((post) => res.send(post))
       .catch((err) => {
         console.log(err);
@@ -62,7 +62,10 @@ const PostController = {
   //get by id
   async getById(req, res) {
     try {
-      const post = await Post.findById(req.params._id).populate("userId");
+      const post = await Post.findById(req.params._id).populate(
+        "userId",
+        "name email"
+      );
       res.send(post);
     } catch {
       (err) => {
@@ -79,7 +82,25 @@ const PostController = {
     try {
       const post = await Post.findByIdAndUpdate(
         req.params._id,
-        { $push: { likes: req.user._id } },
+        { $addToSet: { likes: req.user._id } },
+        { new: true }
+      );
+      await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { mypostlikes: req.params._id } },
+        { new: true }
+      ),
+        res.send(post);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Hay un problema con tu solicitud..." });
+    }
+  },
+  async unlike(req, res) {
+    try {
+      const post = await Post.findByIdAndUpdate(
+        req.params._id,
+        { $pull: { likes: req.user._id } },
         { new: true }
       );
       await User.findByIdAndUpdate(

@@ -1,4 +1,4 @@
 node_modules
 config.json
+nodemailer
 keys.js
-nodemailer.js

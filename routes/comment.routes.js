@@ -8,6 +8,7 @@ router.put("/id/:_id", authentication, CommentController.update);
 router.delete("/id/:_id", authentication, CommentController.delete);
 router.get("/", CommentController.getAll);
 router.get("/id/:_id", CommentController.getById);
-router.put("/likes/:_id", authentication, CommentController.like);
+router.post("/likes/:_id", authentication, CommentController.like);
+router.post("/unlikes/:_id", authentication, CommentController.unlike);
 
 module.exports = router;
