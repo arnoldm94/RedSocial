@@ -1,6 +1,7 @@
 const Comment = require("../models/Comment.js");
 const User = require("../models/User.js");
 const Post = require("../models/Post.js");
+require("dotenv").config();
 
 const CommentController = {
   //crear Comment

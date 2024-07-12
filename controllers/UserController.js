@@ -2,6 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/keys.js");
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 const UserController = {
   //crear User
