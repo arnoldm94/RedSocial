@@ -4,7 +4,7 @@
   "description": "2do proyecto en Bootcamp Fullstack en TheBridge",
   "main": "index.js",
   "scripts": {
-    "start": "index",
+    "start": "node index",
     "dev": "nodemon index.js"
   },
   "keywords": [],
