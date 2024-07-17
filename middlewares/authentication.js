@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Comment = require("../models/Comment");
+const Post = require("../models/Post");
 require("dotenv").config();
 
 const authentication = async (req, res, next) => {
@@ -15,9 +17,7 @@ const authentication = async (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .send({ error, message: "Ha habido un problema con el token" });
+    return res.status(500).send({ error, message: "Ha habido un problema con el token" });
   }
 };
 
@@ -30,5 +30,37 @@ const isAdmin = async (req, res, next) => {
   }
   next();
 };
+const isAuthor = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params._id);
 
-module.exports = { authentication, isAdmin };
+    if (post !== 0 && post.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).send({ message: "Este Post no es tuyo" });
+    }
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      error,
+      message: "Ha habido un problema al comprobar la autoría del articulo",
+    });
+  }
+};
+const isAuthorComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params._id);
+
+    if (comment !== 0 && comment.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).send({ message: "Este Comentario no es tuyo" });
+    }
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      error,
+      message: "Ha habido un problema al comprobar la autoría del articulo",
+    });
+  }
+};
+
+module.exports = { authentication, isAdmin, isAuthor, isAuthorComment };

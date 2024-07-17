@@ -164,7 +164,7 @@ const UserController = {
             .send({ message: "Usuario o contraseña incorrectos" });
         }
 
-        const token = jwt.sign({ _id: user._id }, jwt_secret);
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
         if (user.tokens.length > 4) user.tokens.shift();
         user.tokens.push(token);
         user.save();
