@@ -13,6 +13,7 @@ Estas son algunas imagenes de ejemplo de como se ve la base de datos
 ![Api desde dominio](./img/image2.png)
 ![Trello para elaboracion del proyecto](./img/image3.png)
 ![Postman de ejemplo para solicitudes](./img/image.png)
+![Deploying on Railway](./img/image4.png)
 
 ## Empezando 🚀
 
