@@ -9,8 +9,10 @@ Base de datos para una Red Social en donde se han implementado diferentes herram
 ## Visuales
 
 Estas son algunas imagenes de ejemplo de como se ve la base de datos
-![Base de datos con tablas](./img/)
-![Tabla de productos con ejemplos](./img/)
+![Base de datos con tablas](./img/image1.png)
+![Api desde dominio](./img/image2.png)
+![Trello para elaboracion del proyecto](./img/image3.png)
+![Postman de ejemplo para solicitudes](./img/image.png)
 
 ## Empezando 🚀
 
@@ -20,12 +22,14 @@ Estas instrucciones te guiarán para obtener una copia de este proyecto en funci
 
 Lista de software y herramientas, incluyendo versiones, que necesitas para instalar y ejecutar este proyecto:
 
-- MySQL2
+- "bcryptjs": "^2.4.3",
+- "dotenv": "^16.4.5",
+- "express": "^4.19.2",
+- "jsonwebtoken": "^9.0.2",
+- "mongoose": "^8.4.5"
+- "nodemon": "^3.1.4"
 - Javascript
-- DBeaver o cualquier programa parecido
-- Sequelize
-- Express
-- Npm y Node.js
+- VisualStudio
 
 ### Instalación 🔧
 
@@ -44,32 +48,17 @@ npm run dev
 
 ## Ejecutando los ejemplos ⚙️
 
-Instrucciones y ejemplos para ejecutar los seeders de ejemplo del proyecto y crear la base de datos.
-
-```bash
-$ sequelize db:create
-```
-
-```bash
-$ sequelize db:migrate
-```
-
-```bash
-$ sequelize db:seed:all
-```
+Ingresar en postman y utilizar las rutas necesarias para cada caso.
 
 ## Construido Con 🛠️
 
-- [ MySQL](https://www.mysql.com/)
 - [Javascript](https://developer.mozilla.org/es/docs/Web/JavaScript)
-- [DBeaver](https://dbeaver.io/)
-- [Sequelize](https://sequelize.org/)
 - [Express](https://expressjs.com/)
 - [Node.js](https://nodejs.org/en)
 
 ## Soporte
 
-Si tienes algún problema o sugerencia, por favor abre un problema [aquí](https://github.com/arnoldm94/e-comerce/issues).
+Si tienes algún problema o sugerencia, por favor abre un problema [aquí](https://github.com/arnoldm94/RedSocial/issues).
 
 ## Roadmap
 
