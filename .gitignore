@@ -3,3 +3,4 @@ config.json
 nodemailer
 keys.js
 .env
+.vscode
