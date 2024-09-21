@@ -10,9 +10,7 @@ const UserController = {
     req.body.role = "user";
     const password = bcrypt.hashSync(req.body.password, 10);
     User.create({ ...req.body, password: password })
-      .then((user) =>
-        res.status(201).send({ message: "Usuario creado con éxito", user })
-      )
+      .then((user) => res.status(201).send({ message: "Usuario creado con éxito", user }))
       .catch((err) => {
         err.origin = "usuario";
         next(err);
@@ -71,8 +69,7 @@ const UserController = {
           }
         });
         res.send({
-          message:
-            "Los siguientes usuarios se encuentran conectados actualmente: ",
+          message: "Los siguientes usuarios se encuentran conectados actualmente: ",
           conectedUsers,
         });
       });
@@ -95,8 +92,7 @@ const UserController = {
         .populate("mypostlikes", "body")
         .then((user) => {
           res.send({
-            message:
-              "el siguiente usuario se encuentran conectado actualmente: ",
+            message: "el siguiente usuario se encuentran conectado actualmente: ",
             user,
           });
         });
@@ -131,10 +127,7 @@ const UserController = {
   //HECHO PERO FALTA MENSAJE CUANDO NO CONSIGUE USUARIO
   async getOneByName(req, res, next) {
     try {
-      const user = await User.findOne(
-        { name: req.params.name },
-        "name age"
-      ).exec();
+      const user = await User.findOne({ name: req.params.name }, "name age").exec();
       res.send(user);
     } catch {
       (err) => {
@@ -153,22 +146,19 @@ const UserController = {
         email: req.body.email,
       }).then((user) => {
         if (!user) {
-          return res
-            .status(400)
-            .send({ message: "Usuario o contraseña incorrectos" });
+          return res.status(400).send({ message: "Usuario o contraseña incorrectos" });
         }
         const isMatch = bcrypt.compareSync(req.body.password, user.password);
         if (!isMatch) {
-          return res
-            .status(400)
-            .send({ message: "Usuario o contraseña incorrectos" });
+          return res.status(400).send({ message: "Usuario o contraseña incorrectos" });
         }
 
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
         if (user.tokens.length > 4) user.tokens.shift();
+
         user.tokens.push(token);
         user.save();
-        res.send({ message: "Bienvenid@ " + user.name, token });
+        res.send({ message: "Bienvenid@ " + user.name, user, token });
       });
     } catch (error) {
       console.error(error);
@@ -178,18 +168,13 @@ const UserController = {
   //logout de usuario
   async logout(req, res) {
     try {
-      const user = await User.findOne({
-        email: req.body.email,
-      }).then((user) => {
-        user.tokens = [];
-        user.save();
-        res.send({ message: "Desconectado con éxito" });
+      req.user.tokens = req.user.tokens.filter((token) => {
+        return token !== req.token;
       });
+      await req.user.save();
+      res.send({ message: "Sesión cerrada con éxito" });
     } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .send({ message: "hubo un problema al tratar de desconectarte" });
+      res.status(500).send({ message: "Error al cerrar sesión", error });
     }
   },
 };
