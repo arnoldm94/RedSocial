@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const PostController = require("../controllers/PostController.js");
-const {
-  authentication,
-  isAdmin,
-  isAuthor,
-} = require("../middlewares/authentication");
+const { authentication, isAdmin, isAuthor } = require("../middlewares/authentication");
 
 router.post("/", authentication, PostController.create);
 router.put("/id/:_id", authentication, isAuthor, PostController.update);

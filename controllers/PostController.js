@@ -63,10 +63,8 @@ const PostController = {
   //get by id
   async getById(req, res) {
     try {
-      const post = await Post.findById(req.params._id).populate(
-        "userId",
-        "name email"
-      );
+      const post = await Post.findById(req.params._id).populate("userId", "name email");
+
       res.send(post);
     } catch {
       (err) => {
