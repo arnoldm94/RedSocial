@@ -7,6 +7,7 @@ const dbConnection = async () => {
     console.log("Base de datos conectada con éxito");
   } catch (error) {
     console.error(error);
+    console.log(process.env.MONGO_URI);
     throw new Error("Error a la hora de iniciar la base de datos");
   }
 };
